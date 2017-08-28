@@ -7,7 +7,7 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
-let User = new require('./models/UserModel');
+let User = require('./models/UserModel');
 let userRoutes = require('./routes/users');
 let testRouter = express.Router();
 
@@ -20,7 +20,6 @@ let port = process.env.PORT || 8080;
 // Database connection Setup
 let promise = mongoose.connect(configDB.url, {
     useMongoClient: true,
-
 });
 
 let app = express();
@@ -47,11 +46,11 @@ testRouter.get('/setup', function(req, res) {
     });
 
     // save the sample user
-    nick.save(function(err) {
+    nick.save(function(err, nick) {
         if (err) throw err;
 
         console.log('User saved successfully');
-        res.json({ success: true });
+        res.json({ success: true, result: nick });
     });
 });
 

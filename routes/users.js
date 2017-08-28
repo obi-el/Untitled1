@@ -12,22 +12,42 @@ let userRouter = express.Router();
 userRouter.post('/auth', function(req,res){
     User.findOne({
         username: req.body.username
-    }, function(err, user){
+    }, async function(err, user){
         if(err)throw err;
 
         if(!user)res.json({success: false, message: 'Authentication failed. User not found.'});
         else {
-            if(!user.validPassword(req.body.password))res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-            else{
-                let token = jwt.sign(user, userRouter.get('superSecret'),{
-                    expiresInMinute : 20
+            try{
+                let isValid = await user.validPassword(req.body.password);
+
+              if(!isValid){
+                  res.json({
+                    success: false,
+                    message: 'Authentication failed. Wrong password.'
+                  });
+              }
+
+              else{
+                  // console.log(userRouter.get('superSecret'));
+                let token = jwt.sign(user, "issadatabase",{
+                  expiresIn : "1h"
                 });
 
                 res.json({
-                    success: true,
-                    message: 'Enjoy your token!',
-                    token: token
+                  success: true,
+                  message: 'Enjoy your token!',
+                  token: token
                 });
+
+              }
+
+            }
+            catch(err){
+                res.json({
+                  success: false
+                  , err: err
+                });
+              throw err;
 
             }
         }
