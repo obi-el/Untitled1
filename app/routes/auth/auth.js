@@ -3,7 +3,7 @@
  * @since 8/30/17
  */
 
-let moduleId = "routes/auth/user.js";
+let moduleId = "routes/auth/auth.js";
 
 let bcrypt = require("bcrypt");
 let http = require("../../../utils/HttpStats");
