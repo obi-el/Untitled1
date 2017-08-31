@@ -1,17 +1,19 @@
 {
   "name": "untitled",
   "version": "0.0.1",
-  "main": "app.js",
+  "main": "server.js",
   "dependencies": {
+    "bcrypt": "^1.0.3",
+    "bluebird": "3.5.0",
     "body-parser": "~1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "jsonwebtoken": "^7.4.3",
+    "mongodb": "^2.2.31",
+    "mongoose": "^4.11.8",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
-    "mongoose": "^4.11.8",
-    "bcrypt": "^1.0.3",
-    "jsonwebtoken": "^7.4.3",
-    "mongodb": "^2.2.31"
+    "validator": "8.1.0"
   }
 }

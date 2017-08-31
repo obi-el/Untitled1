@@ -1,5 +1,7 @@
 /*jshint esversion: 6 */
 
+global.Promise = require("bluebird");
+
 let express = require('express');
 let path = require('path');
 let favicon = require('serve-favicon');
@@ -7,25 +9,23 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
-let User = require('./models/UserModel');
-let userRoutes = require('./routes/users');
+let User = require('./app/models/UserModel');
+let apiRouter = require('./app/routes/api');
 let testRouter = express.Router();
 
 
-let configDB = require('./config/database');
+let config = require('./config/config');
 
 let port = process.env.PORT || 8080;
 
 
-// Database connection Setup
-let promise = mongoose.connect(configDB.url, {
-    useMongoClient: true,
-});
+mongoose.Promise = Promise;
+mongoose.connect(config.url, {useMongoClient: true,});
 
 let app = express();
 
 
-app.set('superSecret', configDB.secret); // secret variable
+app.set('superSecret', config.secret); // secret variable
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -39,22 +39,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 testRouter.get('/setup', function(req, res) {
 
-    // create a sample user
-    let nick = new User({
-        username: 'Nick Cerminara',
-        password: 'password'
-    });
 
-    // save the sample user
-    nick.save(function(err, nick) {
-        if (err) throw err;
+  // create a sample user
+  let nick = new User({
+    username: 'Nick Cerminara'
+    , firstName: "Nick"
+    , lastName: "Cerminara"
+    , email: "dat_boi_cerminara@fakemail.com"
+    , password: 'password'
+  });
 
-        console.log('User saved successfully');
-        res.json({ success: true, result: nick });
-    });
+  // save the sample user
+  nick.save(function(err, nick) {
+    if (err) {
+      console.log(err.message);
+      throw err;
+    }
+
+    console.log('User saved successfully');
+    res.json({ success: true, result: nick });
+  });
 });
 
-app.use('/u',userRoutes);
+app.use('/api',apiRouter);
 app.use('/',testRouter);
 
 
