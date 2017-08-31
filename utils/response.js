@@ -3,6 +3,7 @@
  * @since 12/29/16
  */
 
+//todo: add check for error status code
 function failure(res, moduleId){
 
   return function(status, message, error){

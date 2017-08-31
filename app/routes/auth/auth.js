@@ -5,10 +5,9 @@
 
 let moduleId = "routes/auth/auth.js";
 
-let bcrypt = require("bcrypt");
 let http = require("../../../utils/HttpStats");
 let {createToken} = require("../../../utils/authToken");
-let User = require("../../models/UserModel");
+let User = require("../../models/UserModel").User;
 let {success, failure} = require("../../../utils/response");
 
 /**

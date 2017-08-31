@@ -1,69 +1,47 @@
 /*jshint esversion: 6 */
 
-global.Promise = require("bluebird");
-
 let express = require('express');
 let path = require('path');
-let favicon = require('serve-favicon');
 let logger = require('morgan');
-let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
+let compress = require("compression");
 let mongoose = require('mongoose');
-let User = require('./app/models/UserModel');
+mongoose.Promise = global.Promise = require("bluebird");
+
+let {url, port} = require('./config/index');
 let apiRouter = require('./app/routes/api');
-let testRouter = express.Router();
-
-
-let config = require('./config/config');
-
-let port = process.env.PORT || 8080;
-
 
 mongoose.Promise = Promise;
-mongoose.connect(config.url, {useMongoClient: true,});
+mongoose.connect(url, {useMongoClient: true,});
 
 let app = express();
 
-
-app.set('superSecret', config.secret); // secret variable
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(compress());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-testRouter.get('/setup', function(req, res) {
-
-
-  // create a sample user
-  let nick = new User({
-    username: 'Nick Cerminara'
-    , firstName: "Nick"
-    , lastName: "Cerminara"
-    , email: "dat_boi_cerminara@fakemail.com"
-    , password: 'password'
-  });
-
-  // save the sample user
-  nick.save(function(err, nick) {
-    if (err) {
-      console.log(err.message);
-      throw err;
-    }
-
-    console.log('User saved successfully');
-    res.json({ success: true, result: nick });
-  });
+// CORS
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,HEAD,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization,x-access-token');
+  res.setHeader('X-Powered-By', 'The tears of children');
+  next();
 });
 
 app.use('/api',apiRouter);
-app.use('/',testRouter);
 
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.send({
+      message: err.message,
+      error: err
+    });
+    console.log('Error: ' + err.stack);
+  });
+}
 
 // =======================
 // start the server ======

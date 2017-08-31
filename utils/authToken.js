@@ -5,7 +5,7 @@
 
 let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 
-let config = require("../config/config");
+let config = require("../config/index");
 let response = require("./response");
 let http = require("./HttpStats");
 
