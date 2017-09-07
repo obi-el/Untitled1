@@ -9,8 +9,6 @@ const SALT_ROUNDS = 10;
 
 let userSchema = new Schema({
   username: {type: String, required: true, unique: true, minlength: 2, maxlength: 15}
-  , firstName: {type: String, required: true}
-  , lastName: {type: String, required: true}
   , email: {type: String, required: true
     , validate: {
       isAsync: false

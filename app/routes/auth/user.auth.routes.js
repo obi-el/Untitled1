@@ -9,7 +9,7 @@ let {createUser} = require("./user");
  */
 
 userRouter.post("/new", createUser);
-userRouter.post('/auth', login);
+userRouter.post("/auth", login);
 
 
 module.exports = userRouter;

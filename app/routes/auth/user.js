@@ -15,7 +15,7 @@ exports.createUser = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let user = new User();
-  let userProps = ["firstName", "lastName", "email", "username", "password"];
+  let userProps = ["email", "username", "password"];
 
   for(let prop of userProps){
     user[prop] = req.body[prop];
@@ -31,10 +31,15 @@ exports.createUser = async function(req, res){
     respond(http.CREATED, "User Created", {user, token});
   }
   catch(err){
+    console.log("error");
     let msg = err.code === config.DUP_ERR
       ? "Too late! Username taken."
       : err.msg || err.message;
 
     respondErr(http.BAD_REQUEST, msg, err);
   }
+};
+
+exports.getUser = async function(req, res){
+
 };
