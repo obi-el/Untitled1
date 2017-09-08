@@ -20,15 +20,29 @@ module.exports = describe("User", () => {
   context("Creating a user", () => {
     let userRes;
 
-    it("should return a jwt with user's _id and username", async () => {
+    it("should return user and a jwt with user's _id and username", async () => {
       userRes = await request.post("/api/u/new").send(user1);
       let {user, token} = userRes.body.result;
-      let {_id, username: _username} = user;
       let decoded = await jwt.verifyAsync(token, secret);
-      let {_id: id, username} = decoded;
+      let {_id, username} = decoded;
 
-      expect(id).to.equal(_id);
-      expect(username).to.equal(_username);
+      Object.keys(user).forEach(key => {
+        if(user1[key]) expect(user1[key]).to.equal(user[key]);
+      });
+
+      expect(user1._id).to.equal(_id);
+      expect(user1.username).to.equal(username);
     });
-  })
+  });
+
+  context("Authenticating a user", async () => {
+    it("should return a jwt with the user's _id and username", async () => {
+      let response = await request.post("/api/u/auth").send(user1);
+      let {token} = response.body.result;
+      let {_id, username} = await jwt.verifyAsync(token, secret);
+
+      expect(user1._id).to.equal(_id);
+      expect(user1.username).to.equal(username);
+    });
+  });
 });

@@ -15,7 +15,7 @@ exports.createUser = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let user = new User();
-  let userProps = ["email", "username", "password"];
+  let userProps = ["_id", "email", "username", "password"];
 
   for(let prop of userProps){
     user[prop] = req.body[prop];

@@ -40,11 +40,23 @@ if (app.get('env') === 'development') {
       error: err
     });
     console.log('Error: ' + err.stack);
+    next(err);
   });
 }
 
 // =======================
 // start the server ======
 // =======================
-app.listen(port);
+let server = app.listen(port);
+
+server.on("close", async err => {
+  if(err) throw err;
+
+  console.log("\nClosing db connections...\n");
+  await mongoose.disconnect();
+  console.log("Server Out!! *drops mic*");
+});
+
+process.on('SIGINT', () => server.close());
+
 console.log('Magic happens at http://localhost:' + port);
