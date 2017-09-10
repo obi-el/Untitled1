@@ -89,5 +89,23 @@ module.exports = describe("User", () => {
       expect(user._id).to.equal(user2._id);
       expect(user).to.not.have.property("password");
     });
+
+    it("should return the user with alias in request's query", async () => {
+      // log in
+      let res = await request.post("/api/u/auth").send(user1);
+      let {token} = res.body.result;
+
+      // get user 2 with user1's token
+      let userRes = await request
+        .get(`/api/u/?alias=${user2.alias}`)
+        .set(authToken, token)
+        .send();
+      let {user} = userRes.body.result;
+
+      expect(user.alias).to.equal(user2.alias);
+      expect(user.email).to.equal(user2.email);
+      expect(user._id).to.equal(user2._id);
+      expect(user).to.not.have.property("password");
+    });
   });
 });
