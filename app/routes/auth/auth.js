@@ -43,6 +43,6 @@ exports.login = async function(req, res){
     return respondErr(http.UNAUTHORIZED, msg)
   }
   catch (err){
-    return respondErr(http.SERVER_ERROR, err.message, err)
+    respondErr(http.SERVER_ERROR, err.message, err)
   }
 };

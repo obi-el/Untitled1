@@ -11,11 +11,19 @@ let User = require("../../models/UserModel").User;
 let http = require("../../../utils/HttpStats");
 let response = require("../../../utils/response");
 
+/**
+ * Creates a user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
 exports.createUser = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
   let user = new User();
-  let userProps = ["_id", "email", "username", "password"];
+  let userProps = ["_id", "email", "alias", "password"];
 
   for(let prop of userProps){
     user[prop] = req.body[prop];
@@ -34,12 +42,43 @@ exports.createUser = async function(req, res){
     console.log("error");
     let msg = err.code === config.DUP_ERR
       ? "Too late! Username taken."
-      : err.msg || err.message;
+      : err.message;
 
     respondErr(http.BAD_REQUEST, msg, err);
   }
 };
 
+/**
+ * gets a user
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<*>}
+ */
 exports.getUser = async function(req, res){
+  let respond = response.success(res);
+  let respondErr = response.failure(res);
+  let find;
 
+  if(req.query._id || req.query.alias){
+    let {_id, alias} = req.query;
+    find = User.findOne(_id ? {_id} : {alias});
+  }
+  else{
+    find = User.findById(req.user._id);
+  }
+
+  try{
+    let user = await find.exec();
+
+    if(!user){
+      return respondErr(http.NOT_FOUND, "User not found");
+    }
+
+    respond(http.OK, "User found", {user});
+  }
+  catch(err){
+    respondErr(http.SERVER_ERROR, err.message, err);
+  }
 };
