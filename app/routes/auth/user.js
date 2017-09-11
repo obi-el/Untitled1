@@ -94,7 +94,7 @@ exports.deleteUser =  async function (req, res){
     let respond = response.success(res);
     let respondErr = response.failure(res);
 
-    let query = User.findOneAndDelete({_id: req.user._id});
+    let query = User.findOneAndRemove({_id: req.user._id});
 
     try{
         let user = await query.exec();
