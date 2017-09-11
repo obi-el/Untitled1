@@ -1,5 +1,6 @@
 /**
  * @author EmmanuelOlaojo
+ * @author ObinnaElobi
  * @since 8/30/17
  */
 
@@ -82,3 +83,30 @@ exports.getUser = async function(req, res){
     respondErr(http.SERVER_ERROR, err.message, err);
   }
 };
+
+/**
+ * deletes logged in user
+ *
+ * @returns {Promise.<void>}
+ */
+
+exports.deleteUser =  async function (req, res){
+    let respond = response.success(res);
+    let respondErr = response.failure(res);
+
+    let query = User.findOneAndRemove({_id: req.user._id});
+
+    try{
+        let user = await query.exec();
+
+        if(!user){
+            return respondErr(http.NOT_FOUND, "User not found");
+        }
+
+       respond(http.OK, "User Deleted Successfully", {user});
+    }
+    catch(err){
+        respondErr(http.SERVER_ERROR, err.message, err)
+    }
+
+}

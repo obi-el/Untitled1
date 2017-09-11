@@ -1,4 +1,9 @@
 /*jshint esversion: 6 */
+/**
+ * @author Obinna Elobi
+ * @since 8/30/17
+ */
+
 
 let bcrypt = require('bcrypt');
 let validator = require("validator");

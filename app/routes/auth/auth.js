@@ -1,5 +1,6 @@
 /**
  * @author EmmanuelOlaojo
+ * @author ObinnaElobi
  * @since 8/30/17
  */
 
@@ -20,10 +21,10 @@ let {success, failure} = require("../../../utils/response");
 exports.login = async function(req, res){
   let respond = success(res);
   let respondErr = failure(res, moduleId);
-  let {username, password} = req.body;
+  let {alias, password} = req.body;
 
   try {
-    let user = await User.findOne({username}).select("+password").exec();
+    let user = await User.findOne({alias}).select("+password").exec();
     let msg = "logged in";
 
     if (!user){
