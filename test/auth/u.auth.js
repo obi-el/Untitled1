@@ -107,5 +107,15 @@ module.exports = describe("User", () => {
       expect(user._id).to.equal(user2._id);
       expect(user).to.not.have.property("password");
     });
+
+    // it("should delete the user in requests query", async () => {
+    //     //log in
+    //     let res = await request.post("/api/u/auth").send(user2);
+    //     let
+    //
+    //
+    //
+    // })
+
   });
 });
