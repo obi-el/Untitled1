@@ -128,6 +128,7 @@ module.exports = describe("User", () => {
           expect(user.email).to.equal(user1.email);
           expect(user._id).to.equal(user1._id);
 
+
       })
 
       it("should return error if request is unauthenticated", async () => {
@@ -155,6 +156,7 @@ module.exports = describe("User", () => {
               .set(authToken, token)
               .send();
 
+          //delete deleted user
           try{
               await request
                   .delete("/api/u/del")
@@ -164,6 +166,17 @@ module.exports = describe("User", () => {
           catch(err) {
               expect(err).to.have.status(http.NOT_FOUND);
               expect(err.response.body).to.not.have.property("result");
+          }
+
+          //retrieve deleted user with get request
+          try{
+              await request
+                  .get(`/api/u/?alias=${user1.alias}`)
+                  .set(authToken, token)
+                  .send();
+          }
+          catch(err){
+              expect(err).to.have.status(http.NOT_FOUND);
           }
 
 
