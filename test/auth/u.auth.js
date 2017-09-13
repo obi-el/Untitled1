@@ -77,7 +77,7 @@ module.exports = describe("User", () => {
       // create user2
       await request.post("/api/u/new").send(user2);
 
-      // get user 2 with user1's token
+      // get user2 with user1's token
       let userRes = await request
         .get(`/api/u/?_id=${user2._id}`)
         .set(authToken, token)
@@ -109,80 +109,92 @@ module.exports = describe("User", () => {
     });
   });
 
+  context("Getting all users", () => {
+    it("should respond with an error if request is unauthenticated", async () => {
+      try {
+        await request.get(`/api/u/all`).set(authToken, "rubbish").send();
+      }
+      catch(err) {
+        expect(err).to.have.status(http.UNAUTHORIZED);
+        expect(err.response.body).to.not.have.property("result");
+      }
+    });
 
+    it("should return all users", async function(){
+      let res = await request.post("/api/u/auth").send(user1);
+      let {token} = res.body.result;
+
+      let uRes = await request
+        .get("/api/u/all")
+        .set(authToken, token)
+        .send();
+      let {users} = uRes.body.result;
+      let dbUsers = await User.find().exec();
+
+      expect(users.length).to.equal(dbUsers.length);
+    })
+  });
 
   context("Deleting Logged in User", ()=> {
-      it("should return and delete the user in requests query", async () => {
-          //log in
-          let res = await request.post("/api/u/auth").send(user1);
-          let {token} = res.body.result;
+    it("should return and delete the user in requests query", async () => {
+      //log in
+      let res = await request.post("/api/u/auth").send(user1);
+      let {token} = res.body.result;
 
-          let deleteRes = await request
-              .delete("/api/u/del")
-              .set(authToken, token)
-              .send();
-          let {user} = deleteRes.body.result;
+      let deleteRes = await request
+        .delete("/api/u/del")
+        .set(authToken, token)
+        .send();
+      let {user} = deleteRes.body.result;
 
+      expect(user.alias).to.equal(user1.alias);
+      expect(user.email).to.equal(user1.email);
+      expect(user._id).to.equal(user1._id);
+    });
 
-          expect(user.alias).to.equal(user1.alias);
-          expect(user.email).to.equal(user1.email);
-          expect(user._id).to.equal(user1._id);
+    it("should return error if request is unauthenticated", async () => {
+      try{
+        await request
+          .delete("/api/u/del")
+          .send();
+      }
+      catch(err) {
+        expect(err).to.have.status(http.UNAUTHORIZED);
+        expect(err.response.body).to.not.have.property("result");
+      }
+    });
 
+    it("should return error if User doesn't exist", async () => {
+      await request.post("/api/u/new").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
+      let {token} = res.body.result;
 
-      })
+      await request
+        .delete("/api/u/del")
+        .set(authToken, token)
+        .send();
 
-      it("should return error if request is unauthenticated", async () => {
+      //delete deleted user
+      try{
+        await request
+          .delete("/api/u/del")
+          .set(authToken, token)
+          .send();
+      }
+      catch(err) {
+        expect(err).to.have.status(http.NOT_FOUND);
+        expect(err.response.body).to.not.have.property("result");
+      }
 
-          try{
-              let deleteRes = await request
-                  .delete("/api/u/del")
-                  .send();
-          }
-          catch(err) {
-              expect(err).to.have.status(http.UNAUTHORIZED);
-              expect(err.response.body).to.not.have.property("result");
-          }
-
-
-      })
-
-      it("should return error if User doesn't exist", async () => {
-          await request.post("/api/u/new").send(user1)
-          let res = await request.post("/api/u/auth").send(user1);
-          let {token} = res.body.result;
-
-          let deleteRes = await request
-              .delete("/api/u/del")
-              .set(authToken, token)
-              .send();
-
-          //delete deleted user
-          try{
-              await request
-                  .delete("/api/u/del")
-                  .set(authToken, token)
-                  .send();
-          }
-          catch(err) {
-              expect(err).to.have.status(http.NOT_FOUND);
-              expect(err.response.body).to.not.have.property("result");
-          }
-
-          //retrieve deleted user with get request
-          try{
-              await request
-                  .get(`/api/u/?alias=${user1.alias}`)
-                  .set(authToken, token)
-                  .send();
-          }
-          catch(err){
-              expect(err).to.have.status(http.NOT_FOUND);
-          }
-
-
-      })
-
-
-
+      try{
+        await request
+          .get(`/api/u/?alias=${user1.alias}`)
+          .set(authToken, token)
+          .send();
+      }
+      catch(err){
+        expect(err).to.have.status(http.NOT_FOUND);
+      }
+    });
   });
 });

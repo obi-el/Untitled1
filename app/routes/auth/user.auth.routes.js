@@ -1,23 +1,19 @@
 /*jshint esversion: 6 */
-let express = require('express');
-let {login} = require("./auth");
 
+let express = require('express');
+
+let auth = require("./auth");
 let {checkToken} = require("../../../utils/authToken");
-let {createUser, getUser, deleteUser} = require("./user");
+let user = require("./user");
 
 let userRouter = express.Router();
 
-/**
- * login handler
- */
+userRouter.get("/", checkToken, user.getUser);
+userRouter.get("/all", checkToken, user.getUsers);
 
-userRouter.get("/", checkToken, getUser);
+userRouter.post("/new",user.createUser);
+userRouter.post("/auth", auth.login);
 
-userRouter.post("/new", createUser);
-userRouter.post("/auth", login);
-
-userRouter.delete("/del", checkToken, deleteUser);
+userRouter.delete("/del", checkToken, user.deleteUser);
 
 module.exports = userRouter;
-
-
