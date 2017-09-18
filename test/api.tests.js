@@ -21,5 +21,5 @@ describe("All Tests", () => {
     return await conn.close();
  });
 
-  require("./auth");
+  require("./u_auth");
 });

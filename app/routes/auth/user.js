@@ -4,7 +4,7 @@
  * @since 8/30/17
  */
 
-let moduleId = "routes/auth/user.js";
+let moduleId = "routes/u_auth/user.js";
 
 let config = require("../../../config");
 let {createToken} = require("../../../utils/authToken");
@@ -59,7 +59,7 @@ exports.createUser = async function(req, res){
  */
 exports.getUser = async function(req, res){
   let respond = response.success(res);
-  let respondErr = response.failure(res);
+  let respondErr = response.failure(res, moduleId);
   let find;
 
   if(req.query._id || req.query.alias){
@@ -94,12 +94,33 @@ exports.getUser = async function(req, res){
  */
 exports.getUsers = async function(req, res){
   let respond = response.success(res);
-  let respondErr = response.failure(res);
+  let respondErr = response.failure(res, moduleId);
 
   try{
     let users = await User.find().exec();
 
     respond(http.OK, "All Users", {users});
+  }
+  catch(err){
+    respondErr(http.SERVER_ERROR, err.message, err);
+  }
+};
+
+exports.editUser = async function(req, res){
+  let respond = response.success(res);
+  let respondErr = response.failure(res, moduleId);
+  let props = ["email", "password"];
+
+  try{
+    let user = await User.findById(req.user).exec();
+
+    for(let prop of props){
+      if(req.body[prop]) user[prop] = req.body[prop];
+    }
+
+    user = await user.save();
+
+    respond(http.OK, "User edited successfully", {user});
   }
   catch(err){
     respondErr(http.SERVER_ERROR, err.message, err);
@@ -113,7 +134,7 @@ exports.getUsers = async function(req, res){
  */
 exports.deleteUser =  async function (req, res){
   let respond = response.success(res);
-  let respondErr = response.failure(res);
+  let respondErr = response.failure(res, moduleId);
 
   let query = User.findOneAndRemove({_id: req.user._id});
 
