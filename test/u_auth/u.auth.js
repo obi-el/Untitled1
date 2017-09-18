@@ -37,7 +37,7 @@ module.exports = describe("User", () => {
 
   context("Authenticating a user", () => {
     it("should return a jwt with the user's _id and username", async () => {
-      let response = await request.post("/api/u/u_auth").send(user1);
+      let response = await request.post("/api/u/auth").send(user1);
       let {token} = response.body.result;
       let {_id, alias} = await jwt.verifyAsync(token, secret);
 
@@ -58,7 +58,7 @@ module.exports = describe("User", () => {
     });
 
     it("should return the logged in user if no query params", async () => {
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
       let userRes = await request.get("/api/u/").set(authToken, token).send();
       let {user} = userRes.body.result;
@@ -71,7 +71,7 @@ module.exports = describe("User", () => {
 
     it("should return the user with _id in request's query", async () => {
       // log in
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
 
       // create user2
@@ -92,7 +92,7 @@ module.exports = describe("User", () => {
 
     it("should return the user with alias in request's query", async () => {
       // log in
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
 
       // get user 2 with user1's token
@@ -121,7 +121,7 @@ module.exports = describe("User", () => {
     });
 
     it("should return all users", async function(){
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
 
       let uRes = await request
@@ -147,7 +147,7 @@ module.exports = describe("User", () => {
     });
 
     it("should edit the logged in user's email and password", async () => {
-      let res = await request.post("/api/u/u_auth").send(user2);
+      let res = await request.post("/api/u/auth").send(user2);
       let [email, password] = ["newemail@fakemail.com", "test-password-2"];
       let {token} = res.body.result;
 
@@ -164,7 +164,7 @@ module.exports = describe("User", () => {
   context("Deleting Logged in User", ()=> {
     it("should return and delete the user in requests query", async () => {
       //log in
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
 
       let deleteRes = await request
@@ -192,7 +192,7 @@ module.exports = describe("User", () => {
 
     it("should return error if User doesn't exist", async () => {
       await request.post("/api/u/new").send(user1);
-      let res = await request.post("/api/u/u_auth").send(user1);
+      let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;
 
       await request

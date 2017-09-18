@@ -15,7 +15,7 @@ userRouter.route("/")
 userRouter.get("/all", checkToken, user.getUsers);
 
 userRouter.post("/new", user.createUser);
-userRouter.post("/u_auth", auth.login);
+userRouter.post("/auth", auth.login);
 
 userRouter.delete("/del", checkToken, user.deleteUser);
 

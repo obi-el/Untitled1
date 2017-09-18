@@ -4,7 +4,7 @@
  * @since 8/30/17
  */
 
-let moduleId = "routes/u_auth/u_auth.js";
+let moduleId = "routes/auth/auth.js";
 
 let http = require("../../../utils/HttpStats");
 let {createToken} = require("../../../utils/authToken");
