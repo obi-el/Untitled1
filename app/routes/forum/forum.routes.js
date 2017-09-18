@@ -9,6 +9,6 @@ let forum = require("./forum");
 let forumRouter = express.Router();
 
 
-forumRouter.
+
 
 module.exports = forumRouter;
