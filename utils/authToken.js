@@ -25,7 +25,7 @@ async function checkToken(req, res, next){
   let respondErr = response.failure(res, moduleId);
   let authToken = req.get(config.authToken);
 
-  if(!authToken) return respondErr(http.UNAUTHORIZED, "Missing auth token");
+  if(!authToken) return respondErr(http.UNAUTHORIZED, "Missing u_auth token");
 
   try {
     req.user = await jwt.verifyAsync(authToken, config.secret);
