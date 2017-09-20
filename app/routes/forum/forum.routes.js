@@ -10,6 +10,8 @@ let permissions = require("./forumauth");
 let forumRouter = express.Router();
 
 
+forumRouter.post("/new", checkToken, forum.createForum);
+
 forumRouter.get("/", forum.getForum);
 
 forumRouter.delete("/del", [checkToken, permissions.modsOnly], forum.deleteForum);

@@ -42,7 +42,7 @@ exports.createUser = async function(req, res){
   catch(err){
     console.log("error");
     let msg = err.code === config.DUP_ERR
-      ? "Too late! Username taken."
+      ? "Too late! alias taken."
       : err.message;
 
     respondErr(http.BAD_REQUEST, msg, err);

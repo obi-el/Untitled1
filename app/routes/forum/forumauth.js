@@ -59,7 +59,7 @@ exports.subsOnly = async function(req, res, next){
 
   try{
     if(!alias || !topic){
-      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "title");
+      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "topic");
     }
 
     let found = await Forum.findOne({topic: topic}).exec();
