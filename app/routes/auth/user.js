@@ -4,7 +4,7 @@
  * @since 8/30/17
  */
 
-let moduleId = "routes/auth/user.js";
+let moduleId = "routes/u_auth/user.js";
 
 let config = require("../../../config");
 let {createToken} = require("../../../utils/authToken");
@@ -40,12 +40,7 @@ exports.createUser = async function(req, res){
     respond(http.CREATED, "User Created", {user, token});
   }
   catch(err){
-    console.log("error");
-    let msg = err.code === config.DUP_ERR
-      ? "Too late! Username taken."
-      : err.message;
-
-    respondErr(http.BAD_REQUEST, msg, err);
+    respondErr(http.BAD_REQUEST, err.message, err);
   }
 };
 

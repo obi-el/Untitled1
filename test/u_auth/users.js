@@ -12,14 +12,24 @@ exports.user1 = {
   , email: "cdiggy4sho@fakemail.com"
 };
 
+exports.user1Email = {
+  alias: "c-doug2-error-check"
+  , email: exports.user1.email
+};
+
+exports.user1alias = {
+  alias: exports.user1.alias
+  , email: "cdiggy4sho-error-check@fakemail.com"
+};
+
 exports.user2 = {
-  alias: "spicy-p"
-  , email: "royco_cubes@fakemail.com"
+  alias: "crackhead-max"
+  , email: "i_heart_crack@fakemail.com"
 };
 
 exports.user3 = {
-  alias: "crackhead-max"
-  , email: "i_heart_crack@fakemail.com"
+  alias: "spicy-p"
+  , email: "royco_cubes@fakemail.com"
 };
 
 exports.user4 = {
