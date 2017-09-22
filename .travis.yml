@@ -9,6 +9,9 @@ before_install:
 
 services: mongodb
 
+before_script:
+  - sleep 15
+
 script:
   - npm start
   - npm test
