@@ -12,3 +12,5 @@ services: mongodb
 script:
   - npm start
   - npm test
+  
+os: osx
