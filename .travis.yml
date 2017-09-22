@@ -10,10 +10,10 @@ before_install:
 services: mongodb
 
 before_script:
-  - sleep 15
+  - sleep 20
 
 script:
-  - npm start
   - npm test
+  - npm start
   
 os: osx
