@@ -3,7 +3,7 @@
  * @since 13/9/17
  */
 
-let config = require("../config");
+let config = require("../../../config");
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let moduleId = "forumAuth";

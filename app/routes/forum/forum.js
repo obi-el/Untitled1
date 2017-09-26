@@ -3,6 +3,7 @@
  * @since 13/9/17
  */
 
+let config = require("../../../config");
 let moduleId = "routes/forum/forum";
 let Forum = require("../../models/ForumModel").Forum;
 let http = require("../../../utils/HttpStats");
@@ -20,16 +21,16 @@ exports.createForum = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
 
-  let forum = new Forum();
-  forum[topic] = req.body.topic;
-  forum[mods] = [req.body.alias];
-  forum[subs] = [req.body.alias];
+  let forum = new Forum({topic: req.body.topic, mods: [req.body.alias], subs: [req.body.alias]});
+
 
   try{
     forum = await forum.save();
+
     forum = forum.toObject();
 
-    respond(http.CREATED, "Forum Created", {user});
+
+    respond(http.CREATED, "Forum Created", {forum});
 
   }
   catch(err){
