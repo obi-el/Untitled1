@@ -18,12 +18,13 @@ let Forum = require("../../models/ForumModel").Forum;
  * @returns {Promise.<*>}
  */
 exports.modsOnly = async function(req,res,next){
-  let {alias, topic} = req.query;
+  let {alias, topic} = req.body;
   let respondErr = response.failure(res, moduleId);
 
   try{
     if(!alias || !topic){
-      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "title");
+      console.log(alias + "-" + topic);
+      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "topic");
     }
 
     let found = await Forum.findOne({topic: topic}).exec();

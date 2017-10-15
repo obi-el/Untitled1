@@ -40,7 +40,6 @@ exports.createUser = async function(req, res){
     respond(http.CREATED, "User Created", {user, token});
   }
   catch(err){
-    console.log("error");
     let msg = err.code === config.DUP_ERR
       ? "Too late! alias taken."
       : err.message;
