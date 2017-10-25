@@ -2,18 +2,19 @@ language: node_js
 
 node_js:
   - "node"
+  - "8"
 
-before_install:
-  - brew update
-  - brew install mongodb
+addons:
+  apt:
+    sources:
+      - mongodb-upstart
+      - mongodb-3.2-precise
+    packages:
+      - mongodb-org-server
+      - mongodb-org-shell
 
 services: mongodb
 
-before_script:
-  - sleep 20
-
 script:
+  - npm start &
   - npm test
-  - npm start
-  
-os: osx
