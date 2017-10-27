@@ -5,7 +5,7 @@
 
 let express = require("express");
 let apiRouter = express.Router();
-let uAuthRouter = require("./auth/user.auth.routes");
+let uAuthRouter = require("./auth/index");
 
 apiRouter.use("/u", uAuthRouter);
 
