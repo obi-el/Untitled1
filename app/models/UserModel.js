@@ -66,4 +66,4 @@ userSchema.post("save", async function (err, doc, next) {
   next(new Error(`Sorry, the given ${field} has been taken`));
 });
 
-exports.User = mongoose.model('User', userSchema);
+exports.Users = mongoose.model('Users', userSchema);

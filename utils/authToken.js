@@ -37,7 +37,7 @@ async function checkToken(req, res, next){
 }
 
 /**
- * Creates a token from a User's details
+ * Creates a token from a Users's details
  *
  * @param user the user
  *

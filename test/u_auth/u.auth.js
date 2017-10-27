@@ -8,13 +8,13 @@ let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 let chai = require("chai");
 let expect = chai.expect;
 
-let {User} = require("../models");
+let {Users} = require("../models");
 let http = require("../../utils/HttpStats");
 let {port, secret, authToken} = require("../../config");
 let {user1, user2, user1alias, user1Email} = require("./users");
 let SERVER_URL = `http://localhost:${port}`;
 
-module.exports = describe("User", () => {
+module.exports = describe("Users", () => {
   let request = chai.request(SERVER_URL);
 
   context("Creating a user", () => {
@@ -153,7 +153,7 @@ module.exports = describe("User", () => {
         .set(authToken, token)
         .send();
       let {users} = uRes.body.result;
-      let dbUsers = await User.find().exec();
+      let dbUsers = await Users.find().exec();
 
       expect(users.length).to.equal(dbUsers.length);
     })
@@ -177,7 +177,7 @@ module.exports = describe("User", () => {
 
       res = await request.put(`/api/u/`).set(authToken, token).send({email, password});
       let {user} = res.body.result;
-      user = await User.findById(user).select("+password").exec();
+      user = await Users.findById(user).select("+password").exec();
       let validPass = await bcrypt.compare(password, user.password);
 
       expect(user.email).to.equal(email);
@@ -185,7 +185,7 @@ module.exports = describe("User", () => {
     });
   });
 
-  context("Deleting Logged in User", ()=> {
+  context("Deleting Logged in Users", ()=> {
     it("should return and delete the user in requests query", async () => {
       //log in
       let res = await request.post("/api/u/auth").send(user1);
@@ -214,7 +214,7 @@ module.exports = describe("User", () => {
       }
     });
 
-    it("should return error if User doesn't exist", async () => {
+    it("should return error if Users doesn't exist", async () => {
       await request.post("/api/u/new").send(user1);
       let res = await request.post("/api/u/auth").send(user1);
       let {token} = res.body.result;

@@ -5,10 +5,8 @@
  */
 
 let moduleId = "routes/u_auth/user.js";
-
-let config = require("../../../config");
 let {createToken} = require("../../../utils/authToken");
-let User = require("../../models/UserModel").User;
+let User = require("../../models/UserModel").Users;
 let http = require("../../../utils/HttpStats");
 let response = require("../../../utils/response");
 
@@ -37,7 +35,7 @@ exports.createUser = async function(req, res){
 
     let token = await createToken(user);
 
-    respond(http.CREATED, "User Created", {user, token});
+    respond(http.CREATED, "Users Created", {user, token});
   }
   catch(err){
     respondErr(http.BAD_REQUEST, err.message, err);
@@ -69,10 +67,10 @@ exports.getUser = async function(req, res){
     let user = await find.exec();
 
     if(!user){
-      return respondErr(http.NOT_FOUND, "User not found");
+      return respondErr(http.NOT_FOUND, "Users not found");
     }
 
-    respond(http.OK, "User found", {user});
+    respond(http.OK, "Users found", {user});
   }
   catch(err){
     respondErr(http.SERVER_ERROR, err.message, err);
@@ -101,6 +99,14 @@ exports.getUsers = async function(req, res){
   }
 };
 
+/**
+ * Edits a user's properties
+ *
+ * @param req request
+ * @param res response
+ *
+ * @returns {Promise.<void>}
+ */
 exports.editUser = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
@@ -115,7 +121,7 @@ exports.editUser = async function(req, res){
 
     user = await user.save();
 
-    respond(http.OK, "User edited successfully", {user});
+    respond(http.OK, "Users edited successfully", {user});
   }
   catch(err){
     respondErr(http.SERVER_ERROR, err.message, err);
@@ -137,12 +143,12 @@ exports.deleteUser =  async function (req, res){
     let user = await query.exec();
 
     if(!user){
-      return respondErr(http.NOT_FOUND, "User not found");
+      return respondErr(http.NOT_FOUND, "Users not found");
     }
 
-    respond(http.OK, "User Deleted Successfully", {user});
+    respond(http.OK, "Users Deleted Successfully", {user});
   }
   catch(err){
-    respondErr(http.SERVER_ERROR, err.message, err)
+    respondErr(http.SERVER_ERROR, err.message, err);
   }
 };
