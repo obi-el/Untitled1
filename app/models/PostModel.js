@@ -6,15 +6,18 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-let PostSchema = new Schema({
+let schema = {
   author: {type: Schema.Types.ObjectId, ref: "Users", required: true}
   , anon: Boolean
   , type: {type: String, required: true}
   , title: {type: String, required: true}
-  , text: {type: String, required: true}
-  , raw_text: {type: String, required: true}
-  , link: {type: String, required: true}
-  , timestamps: {createdAt: "created_at", updatedAt: "updated_at"}
-});
+  , text: {type: String}
+  , raw_text: {type: String}
+  , link: {type: String}
+};
+
+let options = {timestamps: {createdAt: "created_at", updatedAt: "updated_at"}};
+
+let PostSchema = new Schema(schema, options);
 
 exports.Posts = mongoose.model("Posts", PostSchema);
