@@ -8,8 +8,9 @@ let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 let config = require("../config");
 let response = require("./response");
 let http = require("./HttpStats");
+let Users = require("../app/models/UserModel").Users;
 
-let moduleId = "authToken";
+let moduleId = "utils/authToken";
 
 /**
  * Checks that a user has a valid token
@@ -28,7 +29,15 @@ async function checkToken(req, res, next){
   if(!authToken) return respondErr(http.UNAUTHORIZED, "Missing u_auth token");
 
   try {
-    req.user = await jwt.verifyAsync(authToken, config.secret);
+    let user = await jwt.verifyAsync(authToken, config.secret);
+    user = await Users.findById(user._id);
+
+    if(!user){
+      return respondErr(http.UNAUTHORIZED, "User no longer exists");
+    }
+
+    req.user = user;
+
     next();
   }
   catch(err){

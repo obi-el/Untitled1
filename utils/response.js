@@ -14,7 +14,7 @@ function failure(res, moduleId){
     res.json({
       success: false
       , message: moduleId + ": " + message
-      , error: error
+      , error: error || {message}
     });
   };
 }
