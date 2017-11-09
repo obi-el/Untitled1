@@ -232,7 +232,7 @@ module.exports = describe("Users", () => {
           .send();
       }
       catch(err) {
-        expect(err).to.have.status(http.NOT_FOUND);
+        expect(err).to.have.status(http.UNAUTHORIZED);
         expect(err.response.body).to.not.have.property("result");
       }
 
@@ -243,7 +243,7 @@ module.exports = describe("Users", () => {
           .send();
       }
       catch(err){
-        expect(err).to.have.status(http.NOT_FOUND);
+        expect(err).to.have.status(http.UNAUTHORIZED);
       }
     });
   });
