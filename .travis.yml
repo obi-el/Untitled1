@@ -16,5 +16,7 @@ addons:
 services: mongodb
 
 script:
+  - npm install nodemon
   - npm start &
+  - sleep 5
   - npm test

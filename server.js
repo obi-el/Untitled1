@@ -19,6 +19,7 @@ let app = express();
 app.use(compress());
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CORS

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "test": "mocha"
   },
   "dependencies": {
@@ -11,7 +11,7 @@
     "bluebird": "3.5.0",
     "body-parser": "~1.17.1",
     "compression": "1.7.0",
-    "express": "~4.15.2",
+    "express": "4.15.5",
     "jsonwebtoken": "^7.4.3",
     "markdown-it": "8.4.0",
     "markdown-it-emoji": "1.4.0",
@@ -19,6 +19,7 @@
     "mongodb": "2.2.31",
     "mongoose": "4.11.12",
     "morgan": "~1.8.1",
+    "multer": "1.3.0",
     "validator": "8.1.0"
   },
   "devDependencies": {

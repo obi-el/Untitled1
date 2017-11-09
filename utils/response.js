@@ -27,7 +27,7 @@ function success(res){
     res.json({
       success: true
       , message: message
-      , result: result
+      , result: result || {message}
     });
   }
 }
