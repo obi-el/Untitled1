@@ -3,10 +3,10 @@ let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 let chai = require("chai");
 let expect = chai.expect;
 
-let {User} = require("../models");
+let {Forum} = require("../models/index");
 let http = require("../../utils/HttpStats");
-let {port, secret, authToken} = require("../../config");
-let {user1} = require("./users");
+let {port, secret, authToken} = require("../../config/index");
+let {user1} = require("../auth/users");
 let {testForum1} = require("./forums");
 let SERVER_URL = `http://localhost:${port}`;
 

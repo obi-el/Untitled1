@@ -22,4 +22,5 @@ describe("All Tests", () => {
  });
 
   require("./auth");
+  require("./forum");
 });

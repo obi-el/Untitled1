@@ -1,5 +1,5 @@
 let types = require("mongoose").Types;
-let {user1, user2} = require("./users");
+let {user1, user2} = require("../auth/users");
 
 let id = () => types.ObjectId().toString();
 
