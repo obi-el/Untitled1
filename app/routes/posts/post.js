@@ -10,6 +10,7 @@ let fs = Promise.promisifyAll(require("fs"));
 
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
+let files = require("../../../utils/files");
 let Post = require("../../models/PostModel").Posts;
 
 exports.createPost = async (req, res) => {
@@ -27,12 +28,7 @@ exports.createPost = async (req, res) => {
 
   try{
     if(post.type === "image" && req.file){
-      post.image = {
-        mimetype: req.file.mimetype
-        , data: await fs.readFileAsync(req.file.path, "base64")
-      };
-
-      await fs.unlinkAsync(req.file.path);
+      await files.attachImage(req.file, post, "image");
     }
 
     post = await post.save();
