@@ -10,12 +10,13 @@ let Schema = mongoose.Schema;
 
 let schema = {
   author: {type: Schema.Types.ObjectId, ref: "Users", required: true}
-  , anon: Boolean
-  , type: {type: String, required: true}
+  , anon: {type: Boolean, default: false}
+  , type: {type: String, required: true} // "text" "image" "video" "link"
   , title: {type: String, required: true}
   , text: {type: String}
   , raw_text: {type: String}
   , link: {type: String}
+  , image: {data: String, mimetype: String}
 };
 let options = {timestamps: {createdAt: "created_at", updatedAt: "updated_at"}};
 let PostSchema = new Schema(schema, options);

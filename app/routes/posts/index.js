@@ -3,13 +3,17 @@
  * @since 10/27/17
  */
 
+let mongoose = require("mongoose");
+let multer = require("multer");
 let express = require("express");
+
 let postRouter = express.Router();
+let upload = multer({dest: 'uploads/'});
 
 let auth = require("../../../utils/authToken");
 let post = require("./post");
 
 postRouter.route("/")
-  .post(auth.checkToken, post.createPost);
+  .post(auth.checkToken, upload.single("image"), post.createPost);
 
 module.exports = postRouter;

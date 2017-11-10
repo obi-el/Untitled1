@@ -6,6 +6,8 @@
 
 let moduleId = "/routes/posts/post";
 
+let fs = Promise.promisifyAll(require("fs"));
+
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let Post = require("../../models/PostModel").Posts;
@@ -20,9 +22,19 @@ exports.createPost = async (req, res) => {
     post[prop] = req.body[prop];
   }
 
+  console.log("file: ", req.file);
   post.author = req.user._id;
 
   try{
+    if(post.type === "image" && req.file){
+      post.image = {
+        mimetype: req.file.mimetype
+        , data: await fs.readFileAsync(req.file.path, "base64")
+      };
+
+      await fs.unlinkAsync(req.file.path);
+    }
+
     post = await post.save();
 
     console.log("Created post: \n", post);
