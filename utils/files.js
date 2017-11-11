@@ -30,11 +30,11 @@ exports.uploadVideo = async (file, maxDuration = 10) => {
   try {
     let vid = await toMp4(file, maxDuration);
     let writeStream = gfs.createWriteStream({filename: vid.filename});
-    let readStream = fs.createReadStream(vid.path);
+    let readStream = fs.createReadStream(vid.mp4);
 
     return await new Promise(function (resolve, reject) {
       writeStream.on("close", file => {
-        fs.unlink(vid.path, err => {
+        fs.unlink(vid.mp4, err => {
           if(err) return reject(err);
 
           resolve(file);
