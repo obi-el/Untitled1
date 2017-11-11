@@ -16,7 +16,6 @@ addons:
 services: mongodb
 
 script:
-  - brew install ffmpeg
   - npm install nodemon
   - npm start &
   - sleep 5
