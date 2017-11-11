@@ -17,7 +17,7 @@ let schema = {
   , raw_text: String
   , link: String
   , image: {data: String, mimetype: String}
-  , video: Schema.Types.ObjectId
+  , video: {}
 };
 let options = {timestamps: {createdAt: "created_at", updatedAt: "updated_at"}};
 let PostSchema = new Schema(schema, options);

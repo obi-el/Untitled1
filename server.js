@@ -6,6 +6,7 @@ let logger = require('morgan');
 let bodyParser = require('body-parser');
 let compress = require("compression");
 let mongoose = require('mongoose');
+let Fawn = require("fawn");
 mongoose.Promise = global.Promise = require("bluebird");
 
 let {url, port} = require('./config/index');
@@ -13,6 +14,7 @@ let apiRouter = require('./app/routes/api');
 
 mongoose.Promise = Promise;
 mongoose.connect(url, {useMongoClient: true,});
+Fawn.init(require("mongoose"));
 
 let app = express();
 

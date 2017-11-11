@@ -3,6 +3,8 @@
  * @since 11/10/17
  */
 
+const MAX_DURATION = 10;
+
 let fs = Promise.promisifyAll(require("fs"));
 let mongoose = require("mongoose");
 let ffmpegStatic = require("ffmpeg-static");
@@ -15,6 +17,16 @@ Grid.mongo = mongoose.mongo;
 ffmpeg.setFfmpegPath(ffmpegStatic.path);
 ffmpeg.setFfprobePath(ffprobeStatic.path);
 
+/**
+ * Attach an image to a mongoose document
+ * at the specified key.
+ *
+ * @param file the image to attach
+ * @param doc the mongoose document
+ * @param key image key in the document
+ *
+ * @returns {Promise.<void>}
+ */
 exports.attachImage = async (file, doc, key) => {
   doc[key] = {
     data: await fs.readFileAsync(file.path, "base64")
@@ -24,7 +36,17 @@ exports.attachImage = async (file, doc, key) => {
   await fs.unlinkAsync(file.path);
 };
 
-exports.uploadVideo = async (file, maxDuration = 10) => {
+/**
+ * Takes a video that's not longer than
+ * maxDuration and uploads it to the db as
+ * an mp4
+ *
+ * @param file the video file object
+ * @param maxDuration max duration for a video in seconds
+ *
+ * @returns {Promise.<*>}
+ */
+exports.uploadVideo = async (file, maxDuration = MAX_DURATION) => {
   let gfs = Grid(mongoose.connection.db);
 
   try {
@@ -52,7 +74,14 @@ exports.uploadVideo = async (file, maxDuration = 10) => {
   }
 };
 
-let toMp4 = exports.toMp4 = (file, maxDuration) => {
+/**
+ * Stores the path to an mp4 version of a
+ * video file in file.mp4 and resolves with the
+ * file.
+ *
+ * @returns {Promise.<*>}
+ */
+let toMp4 = exports.toMp4 = (file, maxDuration = MAX_DURATION) => {
   let mpeg = ffmpeg(file.path);
   let filePath = `${file.path}.mp4`;
 
@@ -78,8 +107,6 @@ let toMp4 = exports.toMp4 = (file, maxDuration) => {
             if(err) return reject(err);
 
             file.mp4 = filePath;
-
-            // console.log("File saved as mp4: ", file.mp4);
             resolve(file);
           });
         })
