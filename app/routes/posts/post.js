@@ -6,8 +6,6 @@
 
 let moduleId = "/routes/posts/post";
 
-let fs = Promise.promisifyAll(require("fs"));
-
 let response = require("../../../utils/response");
 let http = require("../../../utils/HttpStats");
 let files = require("../../../utils/files");
@@ -23,20 +21,23 @@ exports.createPost = async (req, res) => {
     post[prop] = req.body[prop];
   }
 
-  console.log("file: ", req.file);
   post.author = req.user._id;
 
   try{
     if(post.type === "image" && req.file){
       await files.attachImage(req.file, post, "image");
     }
+    else if(post.type === "video" && req.file){
+      let mp4File = await files.uploadVideo(req.file);
+      post.video = mp4File._id;
+    }
 
     post = await post.save();
 
-    console.log("Created post: \n", post);
     respond(http.CREATED, "post", post.toObject());
   }
   catch(err){
+    console.log(err);
     respondErr(http.BAD_REQUEST, err.message, err);
   }
 };

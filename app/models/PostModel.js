@@ -13,10 +13,11 @@ let schema = {
   , anon: {type: Boolean, default: false}
   , type: {type: String, required: true} // "text" "image" "video" "link"
   , title: {type: String, required: true}
-  , text: {type: String}
-  , raw_text: {type: String}
-  , link: {type: String}
+  , text: String
+  , raw_text: String
+  , link: String
   , image: {data: String, mimetype: String}
+  , video: Schema.Types.ObjectId
 };
 let options = {timestamps: {createdAt: "created_at", updatedAt: "updated_at"}};
 let PostSchema = new Schema(schema, options);

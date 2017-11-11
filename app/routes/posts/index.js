@@ -14,6 +14,6 @@ let auth = require("../../../utils/authToken");
 let post = require("./post");
 
 postRouter.route("/")
-  .post(auth.checkToken, upload.single("image"), post.createPost);
+  .post(auth.checkToken, upload.single("file"), post.createPost);
 
 module.exports = postRouter;
