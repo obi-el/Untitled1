@@ -56,7 +56,7 @@ exports.createPost = async (req, res) => {
   catch(err){
     try{ // attempt to delete uploaded files if error occurs
       if(req.file && req.file.mp4) await fs.unlinkAsync(req.file.mp4);
-      else if(req.file) await fs.unlinkAsync(req.file.mp4);
+      else if(req.file) await fs.unlinkAsync(req.file);
     }
     catch(_err){console.log(err)} // don't really care about that error
 
