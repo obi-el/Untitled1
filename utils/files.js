@@ -39,7 +39,7 @@ exports.attachImage = async (file, doc, key) => {
 /**
  * Takes a video that's not longer than
  * maxDuration and uploads it to the db as
- * an mp4
+ * an mp4. Not being used currently but it works.
  *
  * @param file the video file object
  * @param maxDuration max duration for a video in seconds
