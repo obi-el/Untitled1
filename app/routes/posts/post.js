@@ -41,8 +41,14 @@ exports.createPost = async (req, res) => {
     }
     else if(post.type === "video" && req.file){
       let file = await files.toMp4(req.file);
+      let {originalname, size, encoding, mimetype} = file;
 
-      task.saveFile(file.mp4, {filename: file.filename});
+      task.saveFile(file.mp4, {
+        filename: file.filename
+        , metadata: {
+          originalname, size, encoding, mimetype
+        }
+      });
       post.video = {$ojFuture: "0._id"};
     }
 
@@ -60,6 +66,6 @@ exports.createPost = async (req, res) => {
     }
     catch(_err){console.log(err)} // don't really care about that error
 
-    respondErr(http.BAD_REQUEST, err.message, err);
+    respondErr(http.SERVER_ERROR, err.message, err);
   }
 };

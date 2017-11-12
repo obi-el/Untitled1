@@ -51,11 +51,8 @@ if (app.get('env') === 'development') {
  * Roll back any incomplete transactions
  */
 (async () => {
-  try{
-    await Fawn.Roller().roll();
-  } catch(err){
-    throw err;
-  }
+  try{await Fawn.Roller().roll()}
+  catch(err){throw err;}
 })();
 
 // =======================

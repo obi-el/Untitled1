@@ -3,6 +3,8 @@
  * @since 11/10/17
  */
 
+let moduleId = "utils/files";
+
 const MAX_DURATION = 10;
 
 let fs = Promise.promisifyAll(require("fs"));
@@ -11,6 +13,9 @@ let ffmpegStatic = require("ffmpeg-static");
 let ffprobeStatic = require("ffprobe-static");
 let ffmpeg = require("fluent-ffmpeg");
 let Grid = require("gridfs-stream");
+
+let response = require("./response");
+let http = require("./HttpStats");
 
 Grid.mongo = mongoose.mongo;
 
@@ -113,4 +118,65 @@ let toMp4 = exports.toMp4 = (file, maxDuration = MAX_DURATION) => {
         .save(filePath);
     });
   });
+};
+
+/**
+ * Route handler for streaming files. This function
+ * responds with a range of bytes from a file
+ * or with the whole file if no range is specified.
+ * It responds with partial content (206)
+ *
+ * @param req the request
+ * @param res the response
+ * @returns {Promise.<*>}
+ */
+exports.stream = async (req, res) => {
+  let respondErr = response.failure(res, moduleId);
+  let _id = req.query.id;
+  let gfs = Promise.promisifyAll(Grid(mongoose.connection.db));
+
+  res.status(http.PARTIAL_CONTENT);
+  res.set("Accept-Ranges", "bytes");
+
+  try{
+    let file = await gfs.findOneAsync({_id});
+
+    if(!file){return respondErr(http.NOT_FOUND, "File not found");}
+
+    res.set("Content-Type", file.metadata.mimetype);
+
+    let byteRange = req.range(file.length);
+
+    switch(byteRange){
+      case -1:
+        return respondErr(http.UNSATISFIABLE_RANGE, "Invalid Range");
+      case -2: case undefined:
+        res.set("Content-Length", `${file.length}`);
+        return gfs.createReadStream({_id}).pipe(res);
+    }
+
+    if(byteRange.type !== "bytes"){
+      return respondErr(http.UNSATISFIABLE_RANGE, "Bytes only, please!!");
+    }
+
+    byteRange = byteRange.shift();
+
+    let readStream = gfs.createReadStream({
+      _id
+      , range: {
+        startPos: byteRange.start
+        , endPos: byteRange.end
+      }
+    });
+
+    res.set({
+      "Content_Length": (byteRange.end - byteRange.start) + 1
+      , "Content-Range": `bytes ${byteRange.start}-${byteRange.end}/${file.length}`
+    });
+
+    readStream.pipe(res);
+  }
+  catch(err){
+    respondErr(http.SERVER_ERROR, err.message, err);
+  }
 };
