@@ -9,7 +9,7 @@ let apiRouter = express.Router();
 let uAuthRouter = require("./auth");
 let postRouter = require("./posts");
 let files = require("../../utils/files");
-let forumRouter = require("./forum/forum.routes");
+let forumRouter = require("./forum/");
 
 apiRouter.use("/u", uAuthRouter);
 apiRouter.use("/f", forumRouter);
