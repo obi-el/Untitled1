@@ -37,6 +37,7 @@ exports.user4 = {
   , email: "will_suck_dick_for_money@fakemail.com"
 };
 
+
 Object.keys(exports).forEach(key => {
   exports[key]._id = id();
   exports[key].password = "test-password";

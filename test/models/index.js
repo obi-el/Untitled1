@@ -4,3 +4,4 @@
  */
 
 exports.Users = require("../../app/models/UserModel").Users;
+exports.Forum = require("../../app/models/ForumModel").Forum;

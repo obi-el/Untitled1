@@ -22,7 +22,7 @@
     "markdown-it-emoji": "1.4.0",
     "mongo": "0.1.0",
     "mongodb": "2.2.31",
-    "mongoose": "4.11.12",
+    "mongoose": "^4.11.12",
     "morgan": "~1.8.1",
     "multer": "1.3.0",
     "validator": "8.1.0"
