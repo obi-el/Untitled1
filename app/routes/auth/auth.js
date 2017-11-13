@@ -8,12 +8,12 @@ let moduleId = "routes/auth/auth.js";
 
 let http = require("../../../utils/HttpStats");
 let {createToken} = require("../../../utils/authToken");
-let User = require("../../models/UserModel").User;
+let User = require("../../models/UserModel").Users;
 let {success, failure} = require("../../../utils/response");
 
 
 /**
- * User login function
+ * Users login function
  *
  * @param req request
  * @param res response
@@ -29,7 +29,7 @@ exports.login = async function(req, res){
     let msg = "logged in";
 
     if (!user){
-      msg = "Authentication failed. User not found."
+      msg = "Authentication failed. Users not found."
     }
     else {
       let validPass = await user.validPassword(password);

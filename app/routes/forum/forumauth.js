@@ -44,7 +44,7 @@ exports.modsOnly = async function(req,res,next){
     respondErr(http.UNAUTHORIZED, config.DEFAULT_ERR_MSG, err);
   }
 
-}
+};
 
 /**
  * checks if you are a subscriber in the specified forum
@@ -80,4 +80,4 @@ exports.subsOnly = async function(req, res, next){
     respondErr(http.UNAUTHORIZED, config.DEFAULT_ERR_MSG, err);
   }
 
-}
+};

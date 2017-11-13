@@ -39,7 +39,7 @@ exports.createForum = async function(req, res){
     respondErr(http.BAD_REQUEST, msg, err);
   }
 
-}
+};
 
 
 /**
@@ -76,7 +76,7 @@ exports.getForum = async function(req, res){
     respondErr(http.SERVER_ERROR, config.DEFAULT_ERR_MSG, err);
   }
 
-}
+};
 
 /**
  * Deletes forum with topic in request

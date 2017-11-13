@@ -3,6 +3,6 @@
  * @since 9/5/17
  */
 
-module.exports = describe("User and Auth tests", function(){
+module.exports = describe("Users and Auth tests", function(){
   require("./u.auth");
 });
