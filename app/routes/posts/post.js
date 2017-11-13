@@ -41,7 +41,8 @@ exports.createPost = async (req, res) => {
     }
     else if(post.type === "video" && req.file){
       let file = await files.toMp4(req.file);
-      let {originalname, size, encoding, mimetype} = file;
+      let {originalname, size, encoding} = file;
+      let mimetype = "video/mp4";
 
       task.saveFile(file.mp4, {
         filename: file.filename
@@ -54,7 +55,7 @@ exports.createPost = async (req, res) => {
 
     let results = await task.save(post).run({useMongoose: true});
 
-    if(req.file.mp4) await fs.unlinkAsync(req.file.mp4);
+    if(req.file && req.file.mp4) await fs.unlinkAsync(req.file.mp4);
 
     post = results.length === 1 ? results[0] : results[1];
     respond(http.CREATED, "post", post.toObject());

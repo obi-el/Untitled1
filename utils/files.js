@@ -5,7 +5,7 @@
 
 let moduleId = "utils/files";
 
-const MAX_DURATION = 10;
+const MAX_DURATION = 20;
 
 let fs = Promise.promisifyAll(require("fs"));
 let mongoose = require("mongoose");
@@ -106,6 +106,7 @@ let toMp4 = exports.toMp4 = (file, maxDuration = MAX_DURATION) => {
       }
 
       mpeg.format("mp4")
+        .outputOptions("-preset ultrafast")
         .on("error", reject)
         .on("end", () => {
           fs.unlink(file.path, err => {
