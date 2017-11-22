@@ -6,6 +6,7 @@
 let Markdown = require("markdown-it");
 let mdEmoji = require("markdown-it-emoji");
 let mongoose = require("mongoose");
+let validator = require("validator");
 let Schema = mongoose.Schema;
 
 let schema = {
@@ -15,7 +16,15 @@ let schema = {
   , title: {type: String, required: true}
   , text: String
   , raw_text: String
-  , link: String
+  , link: {
+      title: String
+    , description: String
+    , image: String
+    , url: {
+      type: String
+      , validator: [validator.isURL, "Invalid Url: `{VALUE}`"]
+    }
+  }
   , image: {data: String, mimetype: String}
   , video: {}
 };

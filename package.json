@@ -16,6 +16,7 @@
     "ffmpeg-static": "2.0.0",
     "ffprobe-static": "2.0.0",
     "fluent-ffmpeg": "2.1.2",
+    "grabity": "1.0.2",
     "gridfs-stream": "1.1.1",
     "jsonwebtoken": "^7.4.3",
     "markdown-it": "8.4.0",
