@@ -10,9 +10,9 @@ let {user1} = require("../u_auth/users");
 let {testForum1} = require("./forums");
 let SERVER_URL = `http://localhost:${port}`;
 
-module.exports = describe("User", () => {
+module.exports = describe("Forum", () => {
   let request = chai.request(SERVER_URL);
-
+  console.log(testForum1);
 
   context("Creating a Forum", () => {
     let forumres;
@@ -24,8 +24,8 @@ module.exports = describe("User", () => {
       let {forum} = forumres.body.result;
 
       expect(forum.topic).to.equal(testForum1.topic);
-      expect(forum.mods.find(x => x === testForum1.alias));
-      expect(forum.subs.find(x => x === testForum1.alias));
+      expect(forum.mods.find(x => x === testForum1.user));
+      expect(forum.subs.find(x => x === testForum1.user));
       expect(forum._id).to.equal(testForum1._id);
     });
 

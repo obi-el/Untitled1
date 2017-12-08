@@ -21,7 +21,7 @@ exports.createForum = async function(req, res){
   let respond = response.success(res);
   let respondErr = response.failure(res, moduleId);
 
-  let forum = new Forum({_id: req.body._id , topic: req.body.topic, mods: [req.body.alias], subs: [req.body.alias]});
+  let forum = new Forum({_id: req.body._id , topic: req.body.topic, mods: [req.body.user], subs: [req.body.user]});
   try{
     forum = await forum.save();
 
@@ -88,11 +88,15 @@ exports.getForum = async function(req, res){
 exports.deleteForum = async function(req,res){
   let respond = response.success(res);
   let respondErr = response.failure(res);
+  let forum;
 
-  let query = Forum.findOneAndRemove({topic: req.body.topic});
+  if(req.body._id || req.body.topic){
+    let {_id, topic} = req.body;
+    forum = Forum.findOneAndRemove(_id ? {_id} : {topic});
+  }
 
   try{
-    let forum = await query.exec();
+    forum = await forum.exec();
 
     if(!forum){
       return respondErr(http.NOT_FOUND, "Forum not found");

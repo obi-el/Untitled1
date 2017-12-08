@@ -9,8 +9,8 @@ let Schema = mongoose.Schema;
 
 let forumSchema = new Schema({
   topic: {type: String, required: true, unique: true}
-  , mods : [{type: String, required: true}]
-  , subs : [{type: String, required: true}]
+  , mods : [{type: Schema.Types.ObjectId, required: true}]
+  , subs : [{type: Schema.Types.ObjectId, required: true}]
 });
 
 exports.Forum = mongoose.model('Forum', forumSchema);

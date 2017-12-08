@@ -18,13 +18,12 @@ let Forum = require("../../models/ForumModel").Forum;
  * @returns {Promise.<*>}
  */
 exports.modsOnly = async function(req,res,next){
-  let {alias, topic} = req.body;
+  let {user, topic} = req.body;
   let respondErr = response.failure(res, moduleId);
 
   try{
-    if(!alias || !topic){
-      console.log(alias + "-" + topic);
-      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "topic");
+    if(!user || !topic){
+      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!user) ? "user" : "topic");
     }
 
     let found = await Forum.findOne({topic: topic}).exec();
@@ -33,7 +32,8 @@ exports.modsOnly = async function(req,res,next){
       return respondErr(http.NOT_FOUND, "Forum Doesn't exist");
     }
 
-    let mod = found.mods.find(x => x === alias);
+
+    let mod = found.mods.find(x => x == user);
 
     if(!mod){
       return respondErr(http.UNAUTHORIZED, config.DEFAULT_ERR_MSG);
@@ -55,12 +55,12 @@ exports.modsOnly = async function(req,res,next){
  * @returns {Promise.<*>}
  */
 exports.subsOnly = async function(req, res, next){
-  let {alias, topic} = req.query;
+  let {user, topic} = req.body;
   let respondErr = response.failure(res, moduleId);
 
   try{
-    if(!alias || !topic){
-      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!alias) ? "alias" : "topic");
+    if(!user || !topic){
+      return respondErr(http.BAD_REQUEST, "Missing Parameter " + (!user) ? "user" : "topic");
     }
 
     let found = await Forum.findOne({topic: topic}).exec();
@@ -69,7 +69,7 @@ exports.subsOnly = async function(req, res, next){
       return respondErr(http.NOT_FOUND, "Forum Doesn't exist");
     }
 
-    let sub = await found.subs.find(x => x === alias);
+    let sub = await found.subs.find(x => x == user);
 
     if(!sub){
       return respondErr(http.UNAUTHORIZED, config.DEFAULT_ERR_MSG);

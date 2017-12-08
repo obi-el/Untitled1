@@ -13,10 +13,8 @@ userRouter.route("/")
   .put(checkToken, user.editUser);
 
 userRouter.get("/all", checkToken, user.getUsers);
-
 userRouter.post("/new", user.createUser);
 userRouter.post("/auth", auth.login);
-
 userRouter.delete("/del", checkToken, user.deleteUser);
 
 module.exports = userRouter;

@@ -5,12 +5,12 @@ let id = () => types.ObjectId().toString();
 
 exports.testForum1 = {
   topic : "Lulz",
-  alias:  user1.alias
+  user:  user1._id
 };
 
 exports.testForum2 = {
   topic : "Mercy Johnson Nudes",
-  alias: user2.alias
+  user: user2._id
 };
 
 Object.keys(exports).forEach(key => {
