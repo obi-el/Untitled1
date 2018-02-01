@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 
-let express = require('express');
+let express = require("express");
 
 let auth = require("./auth");
 let {checkToken} = require("../../../utils/authToken");

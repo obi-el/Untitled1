@@ -3,9 +3,9 @@
  * @since 8/30/17
  */
 
-let bcrypt = require('bcrypt');
+let bcrypt = require("bcrypt");
 let validator = require("validator");
-let mongoose = require('mongoose');
+let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let config = require("../../config");
@@ -36,11 +36,11 @@ userSchema.methods.validPassword = function(password) {
 };
 
 //hash password before each save
-userSchema.pre('save', async function (next) {
+userSchema.pre("save", async function (next) {
   let user = this;
 
   try {
-    if (user.isModified('password')) {
+    if (user.isModified("password")) {
       user.password = await this.generateHash(user.password);
     }
 
@@ -66,4 +66,4 @@ userSchema.post("save", async function (err, doc, next) {
   next(new Error(`Sorry, the given ${field} has been taken`));
 });
 
-exports.Users = mongoose.model('Users', userSchema);
+exports.Users = mongoose.model("Users", userSchema);

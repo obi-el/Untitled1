@@ -1,23 +1,16 @@
-let bcrypt = require("bcrypt");
-let jwt = Promise.promisifyAll(require("jsonwebtoken"));
 let chai = require("chai");
 let expect = chai.expect;
-
-let {Forum} = require("../models/index");
-let http = require("../../utils/HttpStats");
-let {port, secret, authToken} = require("../../config/index");
+let {port, authToken} = require("../../config/index");
 let {user1} = require("../u_auth/users");
 let {testForum1} = require("./forums");
 let SERVER_URL = `http://localhost:${port}`;
 
 module.exports = describe("Forum", () => {
   let request = chai.request(SERVER_URL);
-  console.log(testForum1);
-
   context("Creating a Forum", () => {
     let forumres;
 
-    it("should return a new forum with topic in request", async () =>{
+    it("should return a new forum with topic in request", async () => {
       let userRes = await request.post("/api/u/new").send(user1);
       let {token} = userRes.body.result;
       forumres = await request.post("/api/f/new").set(authToken, token).send(testForum1);
@@ -32,7 +25,7 @@ module.exports = describe("Forum", () => {
   });
 
   context("Getting a forum", () => {
-    it("should return forum with _id in request", async ()=>{
+    it("should return forum with _id in request", async () => {
       await request.post("/api/u/auth").send(user1);
 
       let res = await request.get(`/api/f/?_id=${testForum1._id}`).send();
@@ -41,7 +34,7 @@ module.exports = describe("Forum", () => {
       expect(forum._id).to.equal(testForum1._id);
     });
 
-    it("should return forum with topic in request", async ()=>{
+    it("should return forum with topic in request", async () => {
       await request.post("/api/u/auth").send(user1);
 
       let res = await request.get(`/api/f/?topic=${testForum1.topic}`).send();
@@ -62,7 +55,7 @@ module.exports = describe("Forum", () => {
         .set(authToken, token)
         .send(testForum1);
 
-      let {forum} =  deleteRes.body.result;
+      let {forum} = deleteRes.body.result;
 
       expect(forum.topic).to.equal(testForum1.topic);
       expect(forum._id).to.equal(testForum1._id);

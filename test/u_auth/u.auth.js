@@ -73,7 +73,7 @@ module.exports = describe("Users", () => {
   context("Getting a user",  () => {
     it("should respond with an error if request is unauthenticated", async () => {
       try {
-        await request.get(`/api/u/`).set(authToken, "rubbish").send();
+        await request.get("/api/u/").set(authToken, "rubbish").send();
       }
       catch(err) {
         expect(err).to.have.status(http.UNAUTHORIZED);
@@ -136,7 +136,7 @@ module.exports = describe("Users", () => {
   context("Getting all users", () => {
     it("should respond with an error if request is unauthenticated", async () => {
       try {
-        await request.get(`/api/u/all`).set(authToken, "rubbish").send();
+        await request.get("/api/u/all").set(authToken, "rubbish").send();
       }
       catch(err) {
         expect(err).to.have.status(http.UNAUTHORIZED);
@@ -156,13 +156,13 @@ module.exports = describe("Users", () => {
       let dbUsers = await Users.find().exec();
 
       expect(users.length).to.equal(dbUsers.length);
-    })
+    });
   });
 
   context("Editing a user",  async function(){
     it("should respond with an error if request is unauthenticated", async () => {
       try {
-        await request.put(`/api/u/`).set(authToken, "rubbish").send();
+        await request.put("/api/u/").set(authToken, "rubbish").send();
       }
       catch(err) {
         expect(err).to.have.status(http.UNAUTHORIZED);
@@ -175,7 +175,7 @@ module.exports = describe("Users", () => {
       let [email, password] = ["newemail@fakemail.com", "test-password-2"];
       let {token} = res.body.result;
 
-      res = await request.put(`/api/u/`).set(authToken, token).send({email, password});
+      res = await request.put("/api/u/").set(authToken, token).send({email, password});
       let {user} = res.body.result;
       user = await Users.findById(user).select("+password").exec();
       let validPass = await bcrypt.compare(password, user.password);

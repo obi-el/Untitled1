@@ -149,11 +149,11 @@ exports.stream = async (req, res) => {
     let byteRange = req.range(file.length);
 
     switch(byteRange){
-      case -1:
-        return respondErr(http.UNSATISFIABLE_RANGE, "Invalid Range");
-      case -2: case undefined:
-        res.set("Content-Length", `${file.length}`);
-        return gfs.createReadStream({_id}).pipe(res);
+    case -1:
+      return respondErr(http.UNSATISFIABLE_RANGE, "Invalid Range");
+    case -2: case undefined:
+      res.set("Content-Length", `${file.length}`);
+      return gfs.createReadStream({_id}).pipe(res);
     }
 
     if(byteRange.type !== "bytes"){

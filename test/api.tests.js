@@ -19,7 +19,7 @@ describe("All Tests", () => {
   after(async () => {
     await conn.dropDatabase();
     return await conn.close();
- });
+  });
 
   require("./u_auth");
   require("./forum");

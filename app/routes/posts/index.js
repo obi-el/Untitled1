@@ -3,12 +3,11 @@
  * @since 10/27/17
  */
 
-let mongoose = require("mongoose");
 let multer = require("multer");
 let express = require("express");
 
 let postRouter = express.Router();
-let upload = multer({dest: 'uploads/'});
+let upload = multer({dest: "uploads/"});
 
 let auth = require("../../../utils/authToken");
 let post = require("./post");

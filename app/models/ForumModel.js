@@ -4,7 +4,7 @@
  */
 
 
-let mongoose = require('mongoose');
+let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let forumSchema = new Schema({
@@ -13,4 +13,4 @@ let forumSchema = new Schema({
   , subs : [{type: Schema.Types.ObjectId, required: true}]
 });
 
-exports.Forum = mongoose.model('Forum', forumSchema);
+exports.Forum = mongoose.model("Forum", forumSchema);
