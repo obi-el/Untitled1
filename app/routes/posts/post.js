@@ -65,7 +65,9 @@ exports.createPost = async (req, res) => {
       if(req.file && req.file.mp4) await fs.unlinkAsync(req.file.mp4);
       else if(req.file) await fs.unlinkAsync(req.file.path);
     }
-    catch(_err){console.log(err)} // don't really care about that error
+    catch(_err){
+      console.log(err);
+    } // don't really care about that error
 
     respondErr(http.SERVER_ERROR, err.message, err);
   }

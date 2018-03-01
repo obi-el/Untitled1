@@ -70,7 +70,7 @@ exports.getForum = async function(req, res){
 
 
 
-    respond(http.OK, "Forum found", {forum})
+    respond(http.OK, "Forum found", {forum});
   }
   catch(err){
     respondErr(http.SERVER_ERROR, config.DEFAULT_ERR_MSG, err);
@@ -105,9 +105,9 @@ exports.deleteForum = async function(req,res){
     respond(http.OK, "Forum Deleted Successfully", {forum});
   }
   catch(err){
-    respondErr(http.SERVER_ERROR, err.message, err)
+    respondErr(http.SERVER_ERROR, err.message, err);
   }
 
-}
+};
 
 

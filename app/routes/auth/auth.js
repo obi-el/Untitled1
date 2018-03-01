@@ -29,7 +29,7 @@ exports.login = async function(req, res){
     let msg = "logged in";
 
     if (!user){
-      msg = "Authentication failed. Users not found."
+      msg = "Authentication failed. Users not found.";
     }
     else {
       let validPass = await user.validPassword(password);
@@ -39,12 +39,12 @@ exports.login = async function(req, res){
 
         return respond(http.OK, msg, {token});
       }
-      else msg = "Authentication failed. Invalid password"
+      else msg = "Authentication failed. Invalid password";
     }
 
-    return respondErr(http.UNAUTHORIZED, msg)
+    return respondErr(http.UNAUTHORIZED, msg);
   }
   catch (err){
-    respondErr(http.SERVER_ERROR, err.message, err)
+    respondErr(http.SERVER_ERROR, err.message, err);
   }
 };

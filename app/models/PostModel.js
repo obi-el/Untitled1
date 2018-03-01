@@ -26,12 +26,12 @@ let md = new Markdown({linkify: true, breaks: true});
 md.use(mdEmoji);
 md.disable("image");
 
-PostSchema.pre("save", function(next){
+PostSchema.pre("save", function (next) {
   let post = this;
 
-  if(post.isModified("raw_text")){
+  if (post.isModified("raw_text")) {
     post.text = md.render(post.raw_text);
-    post.text = post.text.replace(/(?:\r\n|\r|\n)/g, '');
+    post.text = post.text.replace(/(?:\r\n|\r|\n)/g, "");
   }
 
   next();
